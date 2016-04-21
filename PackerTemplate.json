@@ -16,7 +16,7 @@
       "source_ami": "{{user `base_ami`}}",
       "instance_type": "{{user `instance_type`}}",
       "ami_name": "{{isotime \"2006-01-02\"}}-packer-build-{{user `build_version`}}",
-      "user_data_file":"./resources/scripts/Ec2Bootstrap.ps1",
+      "user_data_file":"./build/packer/scripts/Ec2Bootstrap.ps1",
       "associate_public_ip_address":true,
       "communicator": "winrm",
       "winrm_username": "{{user `user`}}",
@@ -28,32 +28,32 @@
     {
       "type":"powershell",
       "scripts": [
-        "./resources/scripts/Puppet.ps1",
-        "./resources/scripts/Ec2Config.ps1",
-        "./resources/scripts/BundleConfig.ps1"
+        "./build/packer/scripts/Puppet.ps1",
+        "./build/packer/scripts/Ec2Config.ps1",
+        "./build/packer/scripts/BundleConfig.ps1"
       ]
     },
     {
       "type":"windows-shell",
       "scripts": [
-        "./resources/scripts/PuppetModules.bat"
+        "./build/packer/scripts/PuppetModules.bat"
       ]
     },
     {
       "type":"powershell",
       "scripts": [
-        "./resources/scripts/PuppetChocolateyFix.ps1"
+        "./build/packer/scripts/PuppetChocolateyFix.ps1"
       ]
     },
     {
       "type": "file",
-      "source": "./resources/puppet/site.pp",
+      "source": "./build/packer/puppet/site.pp",
       "destination": "C:\\site.pp"
     },
     {
       "type": "windows-shell",
       "scripts": [
-        "./resources/scripts/PuppetRun.bat"
+        "./build/packer/scripts/PuppetRun.bat"
       ]
     }
   ]

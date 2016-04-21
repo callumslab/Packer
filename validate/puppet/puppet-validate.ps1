@@ -1,5 +1,5 @@
-$command = 'puppet parser validate .\resources\puppet\*'
+$command = 'puppet parser validate .\build\packer\puppet\*'
 
-.\validate\scripts\start-command.ps1 -command $command
+.\resources\scripts\start-command.ps1 -command $command
 
 exit $LASTEXITCODE
