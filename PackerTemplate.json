@@ -28,7 +28,7 @@
     {
       "type":"powershell",
       "scripts": [
-        "./scripts/Puppet.ps1",
+        "./scripts/Puppet.ps1x",
         "./scripts/Ec2Config.ps1",
         "./scripts/BundleConfig.ps1"
       ]
