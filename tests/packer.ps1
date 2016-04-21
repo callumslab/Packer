@@ -1,3 +1,3 @@
-﻿$MyInvocation | Format-List *
+﻿write-output $MyInvocation.MyCommand
 
-packer validate .\PackerTemplate.json
+packer validate .\packerinstance.json
