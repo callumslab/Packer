@@ -1,0 +1,1 @@
+puppet parser validate .\resources\puppet\*
