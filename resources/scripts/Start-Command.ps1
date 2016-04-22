@@ -13,7 +13,7 @@ $ErrorActionPreference = 'Stop'
 
 try {
     
-    if ($log) { $command = "$command | Tee-Object -file .\logs\$((Get-PSCallStack).location[1]).log"}
+    if ($log) { $command = "$command | Tee-Object -file .\logs\$((Get-PSCallStack).command[1]).log"}
     
     Invoke-Expression -Command $command
 
