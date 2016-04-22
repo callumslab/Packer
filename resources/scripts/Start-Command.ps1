@@ -21,7 +21,7 @@ try {
 
 catch {
 
-    Write-Output "*** Error Encounterd ***`nLast exit code: $LASTEXITCODE `nCommand: $command `nError message: $_"
+    Write-Output "*** Error Encountered ***`nLast exit code: $LASTEXITCODE `nCommand: $command `nError message: $_"
 
     exit $LASTEXITCODE
 
