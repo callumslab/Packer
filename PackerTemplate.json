@@ -4,7 +4,7 @@
     "base_ami":"ami-8519a9f6",
     "user":"Administrator",
     "password":"FooBar@123",
-    "instance_type":"t2.small",
+    "instance_type":"t2.medium",
     "vpc_id":"",
     "subnet_id":""
   },
