@@ -19,7 +19,7 @@ try {
         
         $logfile = "$((Get-PSCallStack).command[1]).log"
         
-        New-Item -Path $logpath -Name $logfile -ItemType File -Force
+        New-Item -Path $logpath -Name $logfile -ItemType File -Force | Out-Null
             
         $command = "$command | Tee-Object -file $logpath\$logfile"
     
