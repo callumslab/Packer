@@ -3,14 +3,18 @@
 
 Param (
 
-    [string]$command
+    [string]$command,
+    
+    [switch]$log
 
 )
 
 $ErrorActionPreference = 'Stop'
 
 try {
-
+    
+    if ($log) { $command = "$command | Tee-Object -file .\logs\$((Get-PSCallStack).location[1]).log"}
+    
     Invoke-Expression -Command $command
 
     if ($LASTEXITCODE -gt 0) { throw }
