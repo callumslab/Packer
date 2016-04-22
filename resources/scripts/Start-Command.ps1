@@ -13,7 +13,15 @@ $ErrorActionPreference = 'Stop'
 
 try {
     
-    if ($log) { $command = "$command | Tee-Object -file .\logs\$((Get-PSCallStack).command[1]).log"}
+    if ($log) { 
+        
+        $logfile = "$((Get-PSCallStack).command[1]).log)"
+        
+        New-Item -Path $logfile -ItemType File -Force
+            
+        $command = "$command | Tee-Object -file .\logs\$logfile"
+    
+    }
     
     Invoke-Expression -Command $command
 
@@ -26,7 +34,9 @@ try {
 catch {
 
     Write-Output "*** Error Encountered ***`nLast exit code: $LASTEXITCODE `nCommand: $command `nError message: $_"
-
+    
+    if ($LASTEXITCODE -eq 0) { $LASTEXITCODE = 1 }
+    
     exit $LASTEXITCODE
 
 }
