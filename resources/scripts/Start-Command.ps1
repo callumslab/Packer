@@ -5,7 +5,9 @@ Param (
 
     [string]$command,
     
-    [switch]$log
+    [switch]$enablelog,
+    
+    [string]$logpath
 
 )
 
@@ -13,13 +15,13 @@ $ErrorActionPreference = 'Stop'
 
 try {
     
-    if ($log) { 
+    if ($enablelog) { 
         
         $logfile = "$((Get-PSCallStack).command[1]).log"
         
-        New-Item -Path $logfile -ItemType File -Force
+        New-Item -Path $logpath -Name $logfile -ItemType File -Force
             
-        $command = "$command | Tee-Object -file .\logs\$logfile"
+        $command = "$command | Tee-Object -file $logpath\$logfile"
     
     }
     
