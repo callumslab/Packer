@@ -1,4 +1,8 @@
-$packerlog = Get-ChildItem .\logs | where name -like *packer* | select -ExpandProperty name                                    
+$packerlogpath = '.\logs'
 
-.\resources\scripts\read-packerlog.ps1 -packerlog $packerlog
+$packerlogname = Get-ChildItem $packerlogpath | where name -like *packer* | select -ExpandProperty name                                    
 
+$packerami =  .\resources\scripts\read-packerlog.ps1 -packerlogname $packerlogname -packerlogpath $packerlogpath
+
+
+Write-Output "Packer AMI is $packerami"

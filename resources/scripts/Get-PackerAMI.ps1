@@ -1,13 +1,15 @@
 param (
     
-    [string]$packerlog
+    [string]$packerlogname,
+    
+    [string]$packerlogpath
     
 )
 
 
 $objectarray = @()
 
-foreach ($line in (Get-Content $packerlog)) {
+foreach ($line in (Get-Content "$packerlogpath\$packerlogname")) {
 
     $objectdata = $line.Split(',',4)
 
@@ -20,4 +22,6 @@ foreach ($line in (Get-Content $packerlog)) {
 
 }
 
-return $objectarray
+$objectarray | select data | where data -Match "AMI: (?<ami>ami-[0-9,a-f]+)" | Out-Null
+
+return $Matches['ami']
