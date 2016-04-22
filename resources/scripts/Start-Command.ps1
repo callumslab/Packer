@@ -15,7 +15,7 @@ try {
     
     if ($log) { 
         
-        $logfile = "$((Get-PSCallStack).command[1]).log)"
+        $logfile = "$((Get-PSCallStack).command[1]).log"
         
         New-Item -Path $logfile -ItemType File -Force
             
@@ -35,7 +35,7 @@ catch {
 
     Write-Output "*** Error Encountered ***`nLast exit code: $LASTEXITCODE `nCommand: $command `nError message: $_"
     
-    if ($LASTEXITCODE -eq 0) { $LASTEXITCODE = 1 }
+    if ($LASTEXITCODE -eq 0 -or $LASTEXITCODE -eq $null) { $LASTEXITCODE = 1 }
     
     exit $LASTEXITCODE
 
