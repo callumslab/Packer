@@ -6,9 +6,12 @@ $logpath = '.\build\output'
 
 .\resources\scripts\start-command.ps1 -command $command -enablelog -logpath $logpath
 
+Write-Output $LASTEXITCODE
 
 if ($LASTEXITCODE -eq 0) {
-
+    
+    Write-Output "entered if statement"
+    
     $packerlogname = Get-ChildItem $logpath | where name -like *packer-build* | select -ExpandProperty name                                  
 
     [string]$AMIvalue =  .\resources\scripts\Get-PackerAMI.ps1 -packerlogname $packerlogname -packerlogpath $logpath
