@@ -1,4 +1,6 @@
-﻿$command = 'packer -machine-readable build .\PackerTemplate.json'
+﻿$ErrorActionPreference = 'Stop'
+
+$command = 'packer -machine-readable build .\PackerTemplate.json'
 
 $logpath = '.\build\output'
 
@@ -7,13 +9,13 @@ $logpath = '.\build\output'
 
 if ($LASTEXITCODE -eq 0) {
 
-    $packerlogname = Get-ChildItem $logpath | where name -like *packer-build.ps1* | select -ExpandProperty name                                    
+    $packerlogname = Get-ChildItem $logpath | where name -like *packer-build* | select -ExpandProperty name                                  
 
     [string]$AMIvalue =  .\resources\scripts\Get-PackerAMI.ps1 -packerlogname $packerlogname -packerlogpath $logpath
     
     
     try {
-        $AMIfile = New-Item -Path $logpath -Name 'PackerAMI.txt' -ItemType File
+        $AMIfile = New-Item -Path $logpath -Name 'PackerAMI.txt' -ItemType File -Force
         Set-Content -Path $AMIfile -Value $AMIvalue
     }
     
