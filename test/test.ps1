@@ -1,10 +1,19 @@
-$filepath = '.\build\output'
+$ErrorActionPreference = 'Stop'
 
-$AMIfile = Get-ChildItem $filepath | where name -like *ami*                                    
+try {
+    
+    $filepath = '.\build\output'
 
-$AMIvalue =  Get-Content $AMIfile
+    $AMIfile = Get-ChildItem $filepath | where name -like *ami*                               
 
+    $AMIvalue =  $AMIfile | Get-Content
+    
+    Write-Output "Packer AMI is $AMIvalue"
 
-Write-Output "Packer AMI is $AMIvalue"
-Write-Output "Packer AMI is $AMIvalue"
-Write-Output "Packer AMI is $AMIvalue"
+}
+
+catch {
+    
+    exit 1
+    
+}
