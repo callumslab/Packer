@@ -1,6 +1,6 @@
-$logpath = '.\build\output'
+$filepath = '.\build\output'
 
-$AMIfile = Get-ChildItem $logpath | where name -like *ami* | select -ExpandProperty name                                    
+$AMIfile = Get-ChildItem $filepath | where name -like *ami*                                    
 
 $AMIvalue =  Get-Content $AMIfile
 
