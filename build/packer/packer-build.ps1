@@ -1,24 +1,30 @@
 ﻿$command = 'packer -machine-readable build .\PackerTemplate.json'
 
-.\resources\scripts\start-command.ps1 -command $command -enablelog -logpath '.\logs'
+$logpath = '.\build\output'
+
+.\resources\scripts\start-command.ps1 -command $command -enablelog -logpath $logpath
+
 
 if ($LASTEXITCODE -eq 0) {
-    
-    $packerlogpath = '.\logs'
 
-    $packerlogname = Get-ChildItem $packerlogpath | where name -like *packer* | select -ExpandProperty name                                    
+    $packerlogname = Get-ChildItem $logpath | where name -like *packer-build.ps1* | select -ExpandProperty name                                    
 
-    [string]$packerami =  .\resources\scripts\Get-PackerAMI.ps1 -packerlogname $packerlogname -packerlogpath $packerlogpath
+    [string]$AMIvalue =  .\resources\scripts\Get-PackerAMI.ps1 -packerlogname $packerlogname -packerlogpath $logpath
     
-    Remove-Item Env:\PackerAMI -ErrorAction SilentlyContinue
     
-    $Env:PackerAMI = $packerami
+    try {
+        $AMIfile = New-Item -Path $logpath -Name 'PackerAMI.txt' -ItemType File
+        Set-Content -Path $AMIfile -Value $AMIvalue
+    }
+    
+    catch {
+        Write-Output "Error creating and setting the content of the AMIfile: $_"
+        $LASTEXITCODE = 1
+    }
+    
 
 }
 
-$Env:PackerAMI
-$Env:PackerAMI
-$Env:PackerAMI
 
 exit $LASTEXITCODE
 
