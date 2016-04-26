@@ -35,7 +35,11 @@ try {
 
 catch {
 
-    Write-Output "*** Error Encountered ***`nLast exit code: $LASTEXITCODE `nCommand: $command `nError message: $_"
+    Write-Output "*** Error Encountered ***"
+    Write-Output "Last exit code: $LASTEXITCODE"
+    Write-Output "Command: $command"
+    Write-Output "Caller: $((Get-PSCallStack).command[1])"
+    Write-Output "Error message: $_"
     
     if ($LASTEXITCODE -eq 0 -or $LASTEXITCODE -eq $null) { $LASTEXITCODE = 1 }
     

@@ -1,16 +1,24 @@
-﻿$command = 'packer -machine-readable build .\PackerTemplate.jsonx'
+﻿$command = 'packer -machine-readable build .\PackerTemplate.json'
 
-try {
-    .\resources\scripts\start-command.ps1 -command $command -enablelog -logpath '.\logs'
+.\resources\scripts\start-command.ps1 -command $command -enablelog -logpath '.\logs'
+
+if ($LASTEXITCODE -eq 0) {
+    
+    $packerlogpath = '.\logs'
+
+    $packerlogname = Get-ChildItem $packerlogpath | where name -like *packer* | select -ExpandProperty name                                    
+
+    [string]$packerami =  .\resources\scripts\Get-PackerAMI.ps1 -packerlogname $packerlogname -packerlogpath $packerlogpath
+    
+    Remove-Item Env:\PackerAMI -ErrorAction SilentlyContinue
+    
+    $Env:PackerAMI = $packerami
+
 }
 
-catch {
-    Write-Output "powershell found the error"
-}
-
-
-#Write-Output ("result is: $commandresult`n" * 10)
-
+$Env:PackerAMI
+$Env:PackerAMI
+$Env:PackerAMI
 
 exit $LASTEXITCODE
 
