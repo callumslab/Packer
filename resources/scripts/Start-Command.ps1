@@ -19,6 +19,8 @@ try {
         
         $logfile = "$((Get-PSCallStack).command[1]).log"
         
+        if (-not (Test-Path $logpath)) { throw }
+        
         New-Item -Path $logpath -Name $logfile -ItemType File -Force | Out-Null
             
         $command = "$command | Tee-Object -file $logpath\$logfile"
