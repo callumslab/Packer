@@ -14,7 +14,7 @@ try {
     $outputpath = '.\test\output'
 
     if (-not (Test-Path $outputpath)) { 
-        New-Item -Path $outputpath -ItemType Directory
+        New-Item -Path $outputpath -ItemType Directory -Force | Out-Null
     }
 
 }
@@ -22,7 +22,7 @@ try {
 catch { exit 1 }
 
 
-$command = "terraform apply .\test\terraform -state=$outputpath"
+$command = "terraform apply -state=$outputpath .\test\terraform"
 
 .\resources\scripts\start-command.ps1 -command $command
 
