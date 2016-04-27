@@ -1,10 +1,10 @@
 ﻿$ErrorActionPreference = 'Stop'
 
-$env:PACKER_LOG=1
-$env:PACKER_LOG_PATH="$logpath\packerlog.txt"
-
 $command = 'packer -machine-readable build .\build\packer\packer-template.json'
 $logpath = '.\build\output'
+
+$env:PACKER_LOG=1
+$env:PACKER_LOG_PATH="$logpath\packerlog.txt"
 
 .\resources\scripts\start-command.ps1 -command $command -enablelog -logpath $logpath
 
