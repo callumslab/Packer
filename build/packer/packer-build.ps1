@@ -1,6 +1,6 @@
 ﻿$ErrorActionPreference = 'Stop'
 
-$command = 'packer -machine-readable build .\PackerTemplate.json'
+$command = 'packer -machine-readable build .\build\packer\packer-template.json'
 $logpath = '.\build\output'
 
 .\resources\scripts\start-command.ps1 -command $command -enablelog -logpath $logpath
