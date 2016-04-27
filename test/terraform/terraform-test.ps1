@@ -12,8 +12,11 @@ try {
 
 }
 
-catch {
-    
-    exit 1
-    
-}
+catch { exit 1 }
+
+
+$command = 'terraform apply .\test\terraform'
+
+.\resources\scripts\start-command.ps1 -command $command
+
+exit $LASTEXITCODE
