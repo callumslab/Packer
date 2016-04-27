@@ -22,7 +22,7 @@ try {
 catch { exit 1 }
 
 
-$command = "terraform apply -state=$outputpath .\test\terraform"
+$command = "terraform apply -state-out='$outputpath' -backup=- .\test\terraform"
 
 .\resources\scripts\start-command.ps1 -command $command
 
