@@ -5,6 +5,9 @@ provider "aws" {
 }
 
 resource "aws_instance" "packerimage" {
-    ami = "ami-c38808b0"
+    ami = "${var.packer_ami}"
     instance_type = "t2.small"
+    tags {
+        Name = "Terraform Builder"
+    }
 }

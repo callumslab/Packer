@@ -6,9 +6,9 @@ try {
 
     $AMIfile = Get-ChildItem $filepath | where name -like *ami*                               
 
-    $AMIvalue =  $AMIfile | Get-Content
+    [string]$AMIvalue =  $AMIfile | Get-Content
     
-    Write-Output "Packer AMI is $AMIvalue"
+    $env:TF_VAR_packer_ami = $AMIvalue
 
 }
 
