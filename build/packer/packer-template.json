@@ -1,6 +1,6 @@
 {
   "variables": {
-    "build_version": "1.0.30",
+    "build_version": "1.0.31",
     "base_ami":"ami-8519a9f6",
     "user":"Administrator",
     "password":"FooBar@123",
