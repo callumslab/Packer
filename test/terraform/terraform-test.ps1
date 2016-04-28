@@ -32,6 +32,7 @@ if (-not ($rolecreds)) { exit 1 }
 
 $env:TF_VAR_access_key = $rolecreds.accesskeyid
 $env:TF_VAR_secret_key = $rolecreds.secretaccesskey
+$env:TF_VAR_token = $rolecreds.token
 
 
 $command = "terraform apply -state='$outputpath\terraform.tfstate' -backup=- .\test\terraform"
