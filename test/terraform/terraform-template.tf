@@ -10,7 +10,7 @@ resource "aws_instance" "packerimage" {
     instance_type = "t2.small"
     key_name = "${var.keypair}"
     subnet_id = "${var.subnet_id}"
-    vpc_security_group_ids = "${var.vpc_security_group_ids}"
+    vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
     tags {
         Name = "Terraform Builder"
     }
