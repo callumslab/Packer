@@ -31,7 +31,6 @@ if (-not ($rolecreds)) { exit 1 }
 
 
 $env:TF_VAR_access_key = $rolecreds.accesskeyid
-
 $env:TF_VAR_secret_key = $rolecreds.secretaccesskey
 
 
