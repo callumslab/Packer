@@ -22,6 +22,19 @@ try {
 catch { exit 1 }
 
 
+# This could be fed in from GoCD as an environment variable
+$rolename = 'IaC-Testing-GoCDBuildServer'
+
+[pscustomobject]$rolecreds = .\resources\scripts\get-iamrolecreds.ps1 -rolename $rolename
+
+if (-not ($rolecreds)) { exit 1 }
+
+
+$env:TF_VAR_access_key = $rolecreds.accesskeyid
+
+$env:TF_VAR_secret_key = $rolecreds.secretaccesskey
+
+
 $command = "terraform apply -state='$outputpath\terraform.tfstate' -backup=- .\test\terraform"
 
 .\resources\scripts\start-command.ps1 -command $command
