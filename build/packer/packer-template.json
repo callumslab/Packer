@@ -1,6 +1,6 @@
 {
   "variables": {
-    "build_version": "1.0.33",
+    "build_version": "1.0.34",
     "base_ami":"ami-8519a9f6",
     "user":"Administrator",
     "password":"FooBar@123",
@@ -59,7 +59,7 @@
     {
       "type": "windows-shell",
       "inline": [
-        "cmd.exe /c net stop winrm"
+        "cmd.exe /c echo hello"
       ]
     }
   ]
