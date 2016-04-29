@@ -1,29 +1,28 @@
 {
   "variables": {
-    "build_version": "1.0.34",
-    "base_ami":"ami-8519a9f6",
-    "user":"Administrator",
-    "password":"FooBar@123",
-    "instance_type":"t2.small",
-    "vpc_id":"",
-    "subnet_id":""
+    "build_version": "1.0.36",
+    "source_ami": "{{env `PK_VAR_source_ami`}}",
+    "instance_type": "t2.small",
+    "region": "{{env `AWS_region`}}",
+    "vpc_id": "",
+    "subnet_id": ""
   },
+  
   "builders": [
     {
       "type": "amazon-ebs",
-      "name": "base-ami",
-      "region": "eu-west-1",
-      "source_ami": "{{user `base_ami`}}",
+      "region": "{{user `region`}}",
+      "source_ami": "{{user `source_ami`}}",
       "instance_type": "{{user `instance_type`}}",
       "ami_name": "{{isotime \"2006-01-02\"}}-packer-build-{{user `build_version`}}",
-      "user_data_file":"./build/packer/scripts/Ec2Bootstrap.ps1",
-      "associate_public_ip_address":true,
+      "user_data_file": "./build/packer/scripts/Ec2Bootstrap.ps1",
+      "associate_public_ip_address": true,
       "communicator": "winrm",
-      "winrm_username": "{{user `user`}}",
       "vpc_id": "{{user `vpc_id`}}",
       "subnet_id": "{{user `subnet_id`}}"
     }
   ],
+  
   "provisioners": [
     {
       "type":"powershell",
