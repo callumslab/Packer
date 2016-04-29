@@ -1,6 +1,6 @@
 {
   "variables": {
-    "build_version": "1.0.32",
+    "build_version": "1.0.33",
     "base_ami":"ami-8519a9f6",
     "user":"Administrator",
     "password":"FooBar@123",
@@ -54,6 +54,12 @@
       "type": "windows-shell",
       "scripts": [
         "./build/packer/scripts/PuppetRun.bat"
+      ]
+    },
+    {
+      "type": "windows-shell",
+      "inline": [
+        "cmd.exe /c net stop winrm"
       ]
     }
   ]
