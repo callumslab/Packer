@@ -17,9 +17,9 @@
       "instance_type": "{{user `instance_type`}}",
       "ami_name": "{{isotime \"2006-01-02\"}}-packer-build-{{user `build_version`}}",
       "user_data_file": "./build/packer/scripts/Ec2Bootstrap.ps1",
-      "associate_public_ip_address": false,
       "communicator": "winrm",
       "winrm_username": "{{user `winrm_username`}}",
+      "winrm_private_ip": true,
       "vpc_id": "{{user `vpc_id`}}",
       "subnet_id": "{{user `subnet_id`}}"
     }
