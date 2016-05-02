@@ -1,4 +1,5 @@
 <powershell>
+<#
 write-output "Running User Data Script"
 write-host "(host) Running User Data Script"
 
@@ -36,5 +37,5 @@ cmd.exe /c sc config winrm start= auto
 cmd.exe /c net start winrm
 # CS 2016/04/08 commented out the below as it's not needed in AWS (may need for vCloud?)
 #cmd.exe /c wmic useraccount where "name='vagrant'" set PasswordExpires=FALSE
-
+#>
 </powershell>

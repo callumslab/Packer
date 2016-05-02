@@ -11,7 +11,12 @@ try {
     
     $latestami = (Get-EC2ImageByName -Name $imagename).ImageId
     
+    $thisinstanceid = (Invoke-WebRequest -Uri 'http://169.254.169.254/latest/meta-data/instance-id').content
+    $thisinstance = (Get-EC2Instance -Instance $thisinstanceid).runninginstance
+    
     $env:PK_VAR_source_ami = $latestami
+    $env:PK_VAR_vpc_id = $thisinstance.vpcid
+    $env:PK_VAR_subnet_id = $thisinstance.subnetid
     
 }
     

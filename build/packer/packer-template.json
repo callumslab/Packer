@@ -1,11 +1,11 @@
 {
   "variables": {
-    "build_version": "1.0.36",
+    "build_version": "1.0.37",
     "source_ami": "{{env `PK_VAR_source_ami`}}",
     "instance_type": "t2.small",
     "region": "{{env `AWS_region`}}",
-    "vpc_id": "",
-    "subnet_id": "",
+    "vpc_id": "{{env `PK_VAR_vpc_id`}}",
+    "subnet_id": "{{env `PK_VAR_subnet_id`}}",
     "winrm_username": "administrator"
   },
   
@@ -17,7 +17,7 @@
       "instance_type": "{{user `instance_type`}}",
       "ami_name": "{{isotime \"2006-01-02\"}}-packer-build-{{user `build_version`}}",
       "user_data_file": "./build/packer/scripts/Ec2Bootstrap.ps1",
-      "associate_public_ip_address": true,
+      "associate_public_ip_address": false,
       "communicator": "winrm",
       "winrm_username": "{{user `winrm_username`}}",
       "vpc_id": "{{user `vpc_id`}}",
