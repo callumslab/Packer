@@ -9,8 +9,6 @@ try {
     
     $tempkeypair = New-EC2KeyPair -KeyName "terraform-$(Get-Random -Minimum 001 -Maximum 999)"
     
-    $adminpass = 
-    
     
     # A temp sec group should be created on the fly, should match Packer
     $secgroupname = 'IaC-Testing-ZenMgmtSecGroup'
@@ -59,10 +57,24 @@ try {
 
     .\resources\scripts\start-command.ps1 -command $command
 
+    
+    $tfstateobject = Get-Content "$outputpath\terraform.tfstate" | ConvertFrom-Json
+    $instanceattributes = $tfstateobject.modules.resources.'aws_instance.packerimage'.primary.attributes
 
+
+    $instancepassword = Get-EC2PasswordData -InstanceID $instanceattributes.id -Pemfile $tempkeypair.KeyMaterial
+
+    $securepass = $instancepassword | ConvertTo-SecureString -AsPlainText -Force
+    $creds = [System.Management.Automation.PSCredential]::New("administrator",$securepass)
+    
+    $session = New-PSSession -ComputerName $instanceattributes.private_ip -Credential $creds
+    
+    Invoke-Command -Session $session -ScriptBlock { get-process }
+    
+    
     # Insert terraform destroy command here
 
-
+    $tempkeypair | Out-File c:\zendata\keypair.txt -Force
     $tempkeypair | Remove-EC2KeyPair -force
 
 }
