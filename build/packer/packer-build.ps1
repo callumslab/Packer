@@ -5,7 +5,7 @@ try {
     
     $thisinstance = .\resources\scripts\get-instancedata.ps1
     
-    $latestami = .\resources\scripts\get-latestami.ps1 -imagename $aws_image_name
+    $latestami = .\resources\scripts\get-latestami.ps1 -imagename $env:AWS_Image_Name
     
     
     # Set env variables needed by packer
