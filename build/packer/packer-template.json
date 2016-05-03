@@ -16,7 +16,6 @@
       "source_ami": "{{user `source_ami`}}",
       "instance_type": "{{user `instance_type`}}",
       "ami_name": "{{isotime \"2006-01-02\"}}-packer-build-{{user `build_version`}}",
-      "user_data_file": "./build/packer/scripts/Ec2Bootstrap.ps1",
       "communicator": "winrm",
       "winrm_username": "{{user `winrm_username`}}",
       "ssh_private_ip": true,
