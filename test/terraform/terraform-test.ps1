@@ -18,6 +18,8 @@ try {
     
     $tempkeypair.keymaterial | Out-File -FilePath "$outputpath\tempkeypair.pem" -Force
     
+    $pemfile = get-item -Path "$outputpath\tempkeypair.pem"
+    
     
     # A temp sec group should be created on the fly, should match Packer
     $secgroupname = 'IaC-Testing-ZenMgmtSecGroup'
@@ -42,7 +44,6 @@ try {
     $rolename = 'IaC-Testing-GoCDBuildServer'
 
     [pscustomobject]$rolecreds = .\resources\scripts\get-iamrolecreds.ps1 -rolename $rolename
-
     if (-not ($rolecreds)) { throw }
 
 
@@ -56,7 +57,6 @@ try {
     $env:TF_VAR_keypair = $tempkeypair.keyname
     
 
-
     $command = "terraform apply -state='$outputpath\terraform.tfstate' -backup=- .\test\terraform"
 
     .\resources\scripts\start-command.ps1 -command $command
@@ -65,8 +65,8 @@ try {
     $tfstateobject = Get-Content "$outputpath\terraform.tfstate" | ConvertFrom-Json
     $instanceattributes = $tfstateobject.modules.resources.'aws_instance.packerimage'.primary.attributes
 
-
-    $instancepassword = Get-EC2PasswordData -InstanceID $instanceattributes.id -Pemfile "$outputpath\tempkeypair.pem"
+    
+    $instancepassword = Get-EC2PasswordData -InstanceID $instanceattributes.id -Pemfile $pemfile
 
     $securepass = $instancepassword | ConvertTo-SecureString -AsPlainText -Force
     $creds = [System.Management.Automation.PSCredential]::New("administrator",$securepass)
