@@ -1,20 +1,15 @@
 ﻿$ErrorActionPreference = 'Stop'
 
-# This could be a variable from GoCD depeding on what image we want to use
-$imagename = 'WINDOWS_2012R2_BASE'
-
 try {
+
+    $latestami = .\resources\scripts\get-latestami.ps1 -imagename $env:AWS_Image_Name
     
-    Import-Module -Name aws*
-    Set-DefaultAWSRegion -Region $env:AWS_region
-    
-    $latestami = (Get-EC2ImageByName -Name $imagename).ImageId
-    
+    # Set env variables needed by packer
     $env:PK_VAR_source_ami = $latestami
-    
+
 }
 
-catch {}
+catch { exit 1 }
 
 
 $command = 'packer validate .\build\packer\packer-template.json'
