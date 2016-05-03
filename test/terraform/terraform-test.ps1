@@ -2,9 +2,7 @@ $ErrorActionPreference = 'Stop'
 
 try {
     
-    $thisinstance = .\resources\scripts\get-instancedata.ps1
-    
-    $latestami = .\resources\scripts\get-latestami.ps1 -imagename $env:AWS_Image_Name
+    $thisinstance = .\resources\scripts\get-instancedata.ps1    
     
     
     $tempkeypair = New-EC2KeyPair -KeyName "terraform-$(Get-Random -Minimum 001 -Maximum 999)"
