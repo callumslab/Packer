@@ -4,6 +4,8 @@ try {
     
     $thisinstance = .\resources\scripts\get-instancedata.ps1    
     
+    Set-DefaultAWSRegion -Region $thisinstance.region
+    
     
     $tempkeypair = New-EC2KeyPair -KeyName "terraform-$(Get-Random -Minimum 001 -Maximum 999)"
     
