@@ -14,5 +14,4 @@ resource "aws_instance" "packerimage" {
     tags {
         Name = "Terraform Builder"
     }
-    user_data = "${var.user_data}"
 }

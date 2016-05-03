@@ -6,5 +6,3 @@ variable "packer_ami" {}
 variable "keypair" {}
 variable "subnet_id" {}
 variable "vpc_security_group_ids" {}
-variable "user_data" {file("build/scripts/ec2userdata-enablewinrm.ps1")}
-variable "admin_password" {}
