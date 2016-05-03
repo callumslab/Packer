@@ -21,7 +21,7 @@
       "ssh_private_ip": true,
       "vpc_id": "{{user `vpc_id`}}",
       "subnet_id": "{{user `subnet_id`}}",
-      "user_data_file": "./build/packer/scripts/Ec2Bootstrap.ps1"
+      "user_data_file": "./build/packer/scripts/ec2userdata-enablewinrm.ps1"
     }
   ],
   
