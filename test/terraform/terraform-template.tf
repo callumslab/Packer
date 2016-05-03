@@ -16,7 +16,7 @@ resource "aws_instance" "packerimage" {
     }
     user_data = "${var.user_data}"
     provisioner "local-exec" {
-        command = "powershell -command '& {get-process | set-content c:\zendata\a.txt}'"
+        command = "powershell -command "& {get-process | set-content c:\zendata\a.txt}""
     }
     provisioner "file" {
         source = "resources/scripts/"
