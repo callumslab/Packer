@@ -15,16 +15,4 @@ resource "aws_instance" "packerimage" {
         Name = "Terraform Builder"
     }
     user_data = "${var.user_data}"
-    provisioner "local-exec" {
-        command = "powershell -command "& {get-process | set-content c:\zendata\a.txt}""
-    }
-    provisioner "file" {
-        source = "resources/scripts/"
-        destination = "c:/zendata"
-        connection {
-            type = "winrm"
-            user = "administrator"
-            #password = "${var.admin_password}"
-        }
-    }
 }
