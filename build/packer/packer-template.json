@@ -1,9 +1,9 @@
 {
   "variables": {
-    "build_version": "1.0.38",
+    "build_version": "1.0.39",
     "instance_type": "t2.small",
     "source_ami": "{{env `PK_VAR_source_ami`}}",
-    "region": "{{env `AWS_region`}}",
+    "region": "{{env `PK_VAR_region`}}",
     "vpc_id": "{{env `PK_VAR_vpc_id`}}",
     "subnet_id": "{{env `PK_VAR_subnet_id`}}",
     "winrm_username": "administrator"
@@ -50,7 +50,7 @@
     {
       "type": "file",
       "source": "./build/packer/puppet/site.pp",
-      "destination": "C:\\site.pp"
+      "destination": "C:\\zendata\\site.pp"
     },
     {
       "type": "windows-shell",

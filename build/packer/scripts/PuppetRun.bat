@@ -1,1 +1,1 @@
-puppet apply c:\site.pp
+puppet apply c:\zendata\site.pp

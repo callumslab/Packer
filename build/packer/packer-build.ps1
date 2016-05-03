@@ -1,26 +1,22 @@
 ﻿$ErrorActionPreference = 'Stop'
 
-# This could be a variable from GoCD depeding on what image we want to use
-$imagename = 'WINDOWS_2012R2_BASE'
-
 
 try {
     
-    Import-Module -Name aws*
-    Set-DefaultAWSRegion -Region $env:AWS_region
+    $thisinstance = .\resources\scripts\get-instancedata.ps1
     
-    $latestami = (Get-EC2ImageByName -Name $imagename).ImageId
+    $latestami = .\resources\scripts\get-latestami.ps1 -imagename $aws_image_name
     
-    $thisinstanceid = (Invoke-WebRequest -Uri 'http://169.254.169.254/latest/meta-data/instance-id').content
-    $thisinstance = (Get-EC2Instance -Instance $thisinstanceid).runninginstance
     
+    # Set env variables needed by packer
     $env:PK_VAR_source_ami = $latestami
+    $env:PK_VAR_region = $thisinstance.region
     $env:PK_VAR_vpc_id = $thisinstance.vpcid
     $env:PK_VAR_subnet_id = $thisinstance.subnetid
     
 }
     
-catch {}
+catch { exit 1 }
 
 $command = 'packer -machine-readable build .\build\packer\packer-template.json'
 $logpath = '.\build\output'
