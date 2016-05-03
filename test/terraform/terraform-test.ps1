@@ -52,7 +52,7 @@ try {
     $env:TF_VAR_vpc_security_group_ids = $secgroupid
     $env:TF_VAR_subnet_id = $thisinstance.subnetid
     $env:TF_VAR_keypair = $tempkeypair.keyname
-    $env:TF_VAR_admin_password = 
+    $env:TF_VAR_admin_password = ''
     
 
 
