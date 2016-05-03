@@ -66,6 +66,6 @@ try {
 }
 
 
-catch { $LASTEXITCODE = 1 }
+catch { $_ ; $LASTEXITCODE = 1 }
 
 exit $LASTEXITCODE
