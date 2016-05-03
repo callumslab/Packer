@@ -63,8 +63,10 @@ try {
 
     
     $tfstateobject = Get-Content "$outputpath\terraform.tfstate" | ConvertFrom-Json
+    $tfstateobject
     $instanceattributes = $tfstateobject.modules.resources.'aws_instance.packerimage'.primary.attributes
-
+    $instanceattributes
+    $instanceattributes.id
     
     $instancepassword = Get-EC2PasswordData -InstanceID $instanceattributes.id -Pemfile $pemfile
 
