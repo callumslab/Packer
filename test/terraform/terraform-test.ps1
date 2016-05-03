@@ -2,12 +2,21 @@ $ErrorActionPreference = 'Stop'
 
 try {
     
+    $outputpath = '.\test\output'
+
+    if (-not (Test-Path $outputpath)) { 
+        New-Item -Path $outputpath -ItemType Directory -Force | Out-Null
+    }
+    
+    
     $thisinstance = .\resources\scripts\get-instancedata.ps1    
     
     Set-DefaultAWSRegion -Region $thisinstance.region
     
     
     $tempkeypair = New-EC2KeyPair -KeyName "terraform-$(Get-Random -Minimum 001 -Maximum 999)"
+    
+    $tempkeypair.keymaterial | Out-File -FilePath "$outputpath\tempkeypair.pem" -Force
     
     
     # A temp sec group should be created on the fly, should match Packer
@@ -27,12 +36,7 @@ try {
     # End section - getting AMI
     
     
-    $outputpath = '.\test\output'
-
-    if (-not (Test-Path $outputpath)) { 
-        New-Item -Path $outputpath -ItemType Directory -Force | Out-Null
-    }
-    
+   
     
     # This could be fed in from GoCD as an environment variable
     $rolename = 'IaC-Testing-GoCDBuildServer'
@@ -62,7 +66,7 @@ try {
     $instanceattributes = $tfstateobject.modules.resources.'aws_instance.packerimage'.primary.attributes
 
 
-    $instancepassword = Get-EC2PasswordData -InstanceID $instanceattributes.id -Pemfile $tempkeypair.KeyMaterial
+    $instancepassword = Get-EC2PasswordData -InstanceID $instanceattributes.id -Pemfile "$outputpath\tempkeypair.pem"
 
     $securepass = $instancepassword | ConvertTo-SecureString -AsPlainText -Force
     $creds = [System.Management.Automation.PSCredential]::New("administrator",$securepass)
