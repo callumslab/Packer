@@ -9,6 +9,8 @@ try {
     
     $tempkeypair = New-EC2KeyPair -KeyName "terraform-$(Get-Random -Minimum 001 -Maximum 999)"
     
+    $adminpass = 
+    
     
     # A temp sec group should be created on the fly, should match Packer
     $secgroupname = 'IaC-Testing-ZenMgmtSecGroup'
@@ -50,6 +52,7 @@ try {
     $env:TF_VAR_vpc_security_group_ids = $secgroupid
     $env:TF_VAR_subnet_id = $thisinstance.subnetid
     $env:TF_VAR_keypair = $tempkeypair.keyname
+    $env:TF_VAR_admin_password = 
     
 
 
