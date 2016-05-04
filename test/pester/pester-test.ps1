@@ -2,7 +2,8 @@ $ErrorActionPreference = 'Stop'
 
 try {
     
-    Import-Module aws*, pester
+    Import-Module aws
+    Import-Module pester -ErrorAction SilentlyContinue
     
     $outputpath = '.\test\output'
     
