@@ -82,7 +82,6 @@ try {
     
     # Insert terraform destroy command here
 
-    $tempkeypair | Out-File c:\zendata\keypair.txt -Force
     $tempkeypair | Remove-EC2KeyPair -force
 
 }
