@@ -14,6 +14,11 @@ try {
     }
     
     
+    $thisinstance = .\resources\scripts\get-instancedata.ps1    
+    
+    Set-DefaultAWSRegion -Region $thisinstance.region
+    
+    
     $tfstateobject = Get-Content "$outputpath\terraform.tfstate" | ConvertFrom-Json
     
     $instanceattributes = $tfstateobject.modules.resources.'aws_instance.packerimage'.primary.attributes
