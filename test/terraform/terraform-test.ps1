@@ -2,9 +2,9 @@ $ErrorActionPreference = 'Stop'
 
 try {
     
-    $outputpath = '.\test\output'
+    Import-Module aws*
     
-    $globaltimeout = New-TimeSpan -Minutes 10
+    $outputpath = '.\test\output'
     
 
     if (-not (Test-Path $outputpath)) { 
@@ -21,7 +21,6 @@ try {
     
     $tempkeypair.keymaterial | Out-File -FilePath "$outputpath\tempkeypair.pem" -Force
     
-    $pemfile = get-item -Path "$outputpath\tempkeypair.pem"
     
     
     # A temp sec group should be created on the fly, should match Packer
@@ -41,7 +40,6 @@ try {
     # End section - getting AMI
     
     
-   
     
     # This could be fed in from GoCD as an environment variable
     $rolename = 'IaC-Testing-GoCDBuildServer'
@@ -65,55 +63,6 @@ try {
     .\resources\scripts\start-command.ps1 -command $command
 
     
-    $tfstateobject = Get-Content "$outputpath\terraform.tfstate" | ConvertFrom-Json
-    
-    $instanceattributes = $tfstateobject.modules.resources.'aws_instance.packerimage'.primary.attributes
-
-    
-    $instancepassword = $null
-    $timer = [diagnostics.stopwatch]::StartNew()
-    while ($instancepassword -eq $null) {
-        
-        if ($timer.elapsed -lt $globaltimeout) {
-        
-            try {    
-                $instancepassword = Get-EC2PasswordData -InstanceID $instanceattributes.id -Pemfile $pemfile
-            }
-            catch { Write-Output "Waiting for instance password to become available..." ; sleep 60 }
-        
-        }
-        
-        else { throw "Timed out waiting for the instance password" }
-
-    }
-    
-
-    $securepass = $instancepassword | ConvertTo-SecureString -AsPlainText -Force
-    $creds = [System.Management.Automation.PSCredential]::New("administrator",$securepass)
-    
-    
-    $session = $null
-    $timer = [diagnostics.stopwatch]::StartNew()
-    while ($session -eq $null) {
-        
-        if ($timer.elapsed -lt $globaltimeout) {
-    
-            try {
-                $session = New-PSSession -ComputerName $instanceattributes.private_ip -Credential $creds
-            }
-            catch { Write-Output "Waiting to establish WinRM remote session..." ; sleep 60 }
-        
-        }
-        
-        else { throw "Timed out waiting to establish a WinRM remote session" }
-    
-    }
-    
-    
-    Invoke-Command -Session $session -ScriptBlock { get-process }
-    
-    
-    # Insert terraform destroy command here
 
     $tempkeypair | Remove-EC2KeyPair -force
 
