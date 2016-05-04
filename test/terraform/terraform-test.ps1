@@ -63,10 +63,12 @@ try {
 
     
     $tfstateobject = Get-Content "$outputpath\terraform.tfstate" | ConvertFrom-Json
-    $tfstateobject
+    
     $instanceattributes = $tfstateobject.modules.resources.'aws_instance.packerimage'.primary.attributes
-    $instanceattributes
-    $instanceattributes.id
+
+    
+    # Insert wait or checks to make sure the instance is ready before we get the password
+    sleep 300
     
     $instancepassword = Get-EC2PasswordData -InstanceID $instanceattributes.id -Pemfile $pemfile
 
