@@ -3,6 +3,9 @@ $ErrorActionPreference = 'Stop'
 try {
     
     $outputpath = '.\test\output'
+    
+    $globaltimeout = New-TimeSpan -Minutes 10
+    
 
     if (-not (Test-Path $outputpath)) { 
         New-Item -Path $outputpath -ItemType Directory -Force | Out-Null
@@ -67,15 +70,45 @@ try {
     $instanceattributes = $tfstateobject.modules.resources.'aws_instance.packerimage'.primary.attributes
 
     
-    # Insert wait or checks to make sure the instance is ready before we get the password
-    sleep 300
+    $instancepassword = $null
+    $timer = [diagnostics.stopwatch]::StartNew()
+    while ($instancepassword -eq $null) {
+        
+        if ($timer.elapsed -lt $globaltimeout) {
+        
+            try {    
+                $instancepassword = Get-EC2PasswordData -InstanceID $instanceattributes.id -Pemfile $pemfile
+            }
+            catch { Write-Output "Waiting for instance password to become available..." ; sleep 60 }
+        
+        }
+        
+        else { throw "Timed out waiting for the instance password" }
+
+    }
     
-    $instancepassword = Get-EC2PasswordData -InstanceID $instanceattributes.id -Pemfile $pemfile
 
     $securepass = $instancepassword | ConvertTo-SecureString -AsPlainText -Force
     $creds = [System.Management.Automation.PSCredential]::New("administrator",$securepass)
     
-    $session = New-PSSession -ComputerName $instanceattributes.private_ip -Credential $creds
+    
+    $session = $null
+    $timer = [diagnostics.stopwatch]::StartNew()
+    while ($session -eq $null) {
+        
+        if ($timer.elapsed -lt $globaltimeout) {
+    
+            try {
+                $session = New-PSSession -ComputerName $instanceattributes.private_ip -Credential $creds
+            }
+            catch { Write-Output "Waiting to establish WinRM remote session..." ; sleep 60 }
+        
+        }
+        
+        else { throw "Timed out waiting to establish a WinRM remote session" }
+    
+    }
+    
     
     Invoke-Command -Session $session -ScriptBlock { get-process }
     
