@@ -1,6 +1,6 @@
 {
   "variables": {
-    "build_version": "1.0.51",
+    "build_version": "1.0.52",
     "instance_type": "t2.small",
     "source_ami": "{{env `PK_VAR_source_ami`}}",
     "region": "{{env `PK_VAR_region`}}",
