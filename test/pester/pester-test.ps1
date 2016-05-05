@@ -68,7 +68,10 @@ try {
     $session | Remove-PSSession
    
     
-    Invoke-Pester -Script @{Path = '.\test\pester' ; 'Parameters' = @{'ComputerName' = $instanceattributes.private_ip ; 'Credentials' = $creds}} -OutputFile "$outputpath\pester.tests.xml" -OutputFormat NUnitXml
+    $pesterresult = Invoke-Pester -Script @{Path = '.\test\pester' ; 'Parameters' = @{'ComputerName' = $instanceattributes.private_ip ; 'Credentials' = $creds}} `
+    -OutputFile "$outputpath\pester.tests.xml" -OutputFormat NUnitXml -PassThru
+    
+    if ($pesterresult.failedcount -gt 0) { Throw "$($pesterresult.failedcount) out of $($pesterresult.totalcount) pester tests have failed" }
     
 }
 
