@@ -41,10 +41,14 @@ Describe "SoftwareInstallations" {
         }
         
         It "puppetlabs-windows Puppet module is installed" {
+            
+            $puppetmodule = 'puppetlabs-windows'
 
             $puppetmodulelist = Invoke-Command -Session $session -ScriptBlock { puppet module list }
+            
+            $puppetmodulelist.split(' ') | foreach { if ($_ -like "*$puppetmodule*") { $puppetmodulefound = $_ } }
 
-            $puppetmodulelist | should match 'puppetlabs-windows'
+            $puppetmodulefound | should belike "*$puppetmodule*"
 
         }
         
